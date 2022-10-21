@@ -26,14 +26,8 @@ describe('Login/Logout Test', () => {
 
     it('Should login to application with valid data', () => {
         cy.fixture("user").then((user) => {
-            const username = user.username
-            const password = user.password
 
-            cy.get('#user_login').clear();
-            cy.get('#user_login').type(username);
-            cy.get('#user_password').clear();
-            cy.get('#user_password').type(password);
-            cy.get('input[name="submit"]').click();
+            cy.login('username', 'password')
 
             cy.get('h2').should('contain.text', 'Cash Accounts');
         })
@@ -41,7 +35,11 @@ describe('Login/Logout Test', () => {
 
     it('Should logout from the application', () => {
         cy.contains('username').click()
+        cy.get('#logout_link')
+            .should('have.attr', 'href')
+            .and('include', 'logout.html')
         cy.get('#logout_link').click()
+
         cy.get('strong').should('contain.text', 'Home')
     });
 });
